@@ -2,8 +2,20 @@
 #include "split.h" //arreglar warning de split.c
 #include "nodes.h"
 
+#define LARGO 50
+
+int tamanoArreglo(char *arreglo){
+	int tamano;
+	for(tamano = 0; tamano < LARGO; tamano++){
+		if(arreglo[tamano] == '\0'){
+			break;
+		}
+	}
+	return tamano;
+}
+
 char *leerComando(){
-	char *comando = malloc(sizeof(char) * 50);
+	char *comando = malloc(sizeof(char) * LARGO);
 	printf(">> ");
 	int character = getchar();
 	comando[0] = character;
@@ -11,9 +23,11 @@ char *leerComando(){
 	while((character = getchar()) != '\n'){
 		comando[indice] = character;
 		indice++;
+		if(indice >= LARGO){
+			break;
+		}
 	}
 	comando[++indice] = '\0';
-	//printf("\n");
 	return comando;
 }
 
@@ -26,8 +40,7 @@ void leerConsola(void){
 	for(int iteracion = 0; iteracion < cantidadInstrucciones; iteracion++){
 		comando = leerComando();
 		printf("%s\n", comando);
-		int wea = sizeof(comando);
-		printf("%d\n", wea);
+		printf("%d\n", tamanoArreglo(comando));
 	}
 }
 
