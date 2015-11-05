@@ -1,8 +1,6 @@
-#include "stdio.h"
 #include "split.h" //arreglar warning de split.c
 #include "nodes.h"
 
-#define LARGO 50
 
 int tamanoArreglo(char *arreglo){
 	int tamano;
@@ -45,6 +43,24 @@ void leerConsola(void){
 }
 
 int main(){
-	leerConsola();
+	struct t_node *arbol = NULL;
+	printf("wea1\n");
+	iniciarArbol(&arbol);
+	printf("wea2\n");
+	char **frase = malloc(sizeof(char*));
+	frase[0] = malloc(sizeof(char) * LARGO);
+	frase[0][0] = 'm';
+	frase[0][1] = 'o';
+	frase[0][2] = 'n';
+	frase[0][3] = 'o';
+	frase[0][4] = '\0';
+	
+	printf("wea3\n");
+	agregarDatosArbol(&arbol, frase, 1);
+	printf("wea4\n");
+	printf("%s\n", arbol->children->data->word);
+	printf("wea5\n");
+
+//	leerConsola();
 	return 0;
 }
