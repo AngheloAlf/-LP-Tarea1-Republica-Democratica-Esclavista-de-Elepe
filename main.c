@@ -42,6 +42,10 @@ void leerConsola(void){
 	}
 }
 
+void ejemplo(const char *alf){
+	printf("hello %s!\n", alf);
+}
+
 int main(){
 	struct t_node *arbol = NULL;
 	iniciarArbol(&arbol);
@@ -62,13 +66,18 @@ int main(){
 	printf("%s\n", arbol->children->data->word);
 	printf("%s\n", arbol->children->data->children->data->word);
 
+	arbol->callback = ejemplo;
+	arbol->callback("alf");
+	agregarFuncionArbol(&arbol, ejemplo, frase, 2);
+	
+
+
 
 	frase[1][0] = 'w';
 	frase[1][1] = 'e';
 	frase[1][2] = 'o';
 	frase[1][3] = 'n';
 	frase[1][4] = '\0';
-	printf("\n\n\n\n\n\nver desde aqui\n");
 	agregarDatosArbol(&arbol, frase, 2);
 
 	printf("\n%s\n", arbol->children->data->word);

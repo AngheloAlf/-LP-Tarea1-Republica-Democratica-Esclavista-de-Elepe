@@ -24,5 +24,6 @@ void iniciarArbol(struct t_node **arbol);
 void iniciarLista(struct l_node **lista);
 void agregarPalabraHoja(struct t_node **hoja, char *palabra);
 void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens);
+void agregarFuncionArbol(struct t_node **arbol, void (*callback)(const char *), char **frase, size_t n_tokens);
 
 #endif // NODES_H

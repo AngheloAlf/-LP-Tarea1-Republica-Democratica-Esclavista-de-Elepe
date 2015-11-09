@@ -86,3 +86,8 @@ void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens){
 		(*arbol)->children = recuAgregarDatos(&((*arbol)->children), frase, &iteracion);
 	}
 }
+
+void agregarFuncionArbol(struct t_node **arbol, void (*callback)(const char *), char **frase, size_t n_tokens){
+	(*arbol)->callback = callback;
+	((*arbol)->callback)("alf");
+}
