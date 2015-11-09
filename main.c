@@ -44,22 +44,34 @@ void leerConsola(void){
 
 int main(){
 	struct t_node *arbol = NULL;
-	printf("wea1\n");
 	iniciarArbol(&arbol);
-	printf("wea2\n");
-	char **frase = malloc(sizeof(char*));
+	char **frase = malloc(sizeof(char*) * 2);
 	frase[0] = malloc(sizeof(char) * LARGO);
 	frase[0][0] = 'm';
 	frase[0][1] = 'o';
 	frase[0][2] = 'n';
 	frase[0][3] = 'o';
 	frase[0][4] = '\0';
+	frase[1] = malloc(sizeof(char) * LARGO);
+	frase[1][0] = 'a';
+	frase[1][1] = 'l';
+	frase[1][2] = 'f';
+	frase[1][3] = '\0';
 	
-	printf("wea3\n");
-	agregarDatosArbol(&arbol, frase, 1);
-	printf("wea4\n");
+	agregarDatosArbol(&arbol, frase, 2);
 	printf("%s\n", arbol->children->data->word);
-	printf("wea5\n");
+	printf("%s\n", arbol->children->data->children->data->word);
+
+
+	frase[1][0] = 'w';
+	frase[1][1] = 'e';
+	frase[1][2] = 'o';
+	frase[1][3] = 'n';
+	frase[1][4] = '\0';
+	agregarDatosArbol(&arbol, frase, 2);
+
+	printf("\n%s\n", arbol->children->data->word);
+	printf("%s\n", arbol->children->data->children->data->word);
 
 //	leerConsola();
 	return 0;

@@ -1,7 +1,7 @@
 #include "nodes.h"
 
 void iniciarArbol(struct t_node **arbol){
-	*arbol = malloc(sizeof(struct t_node));
+	(*arbol) = malloc(sizeof(struct t_node));
 	(*arbol)->children = NULL;
 	(*arbol)->word = NULL;
 	(*arbol)->callback = NULL;
@@ -18,37 +18,62 @@ void agregarPalabraHoja(struct t_node **hoja, char *palabra){
 	strcpy((*hoja)->word, palabra);
 }
 
-void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens){
-	printf("0\n");
-	if(((*arbol)->word == NULL) && ((*arbol)->children == NULL) && ((*arbol)->callback == NULL)){ //El arbol no tiene nada aun
-		//crear una hoja y le agregro la primera palabra
-		printf("1\n");
-		struct t_node *hojaArbol = NULL;
-		printf("2\n");
-		iniciarArbol(&hojaArbol);
-		printf("3\n");
-		agregarPalabraHoja(&hojaArbol, frase[0]);
-		printf("4\n");
-
-		//crear lista
-		struct l_node *hijoLista = NULL;
-		printf("5\n");
-		iniciarLista(&hijoLista);
-		printf("6\n");
-
-		//se indexa el la hoja y la lista al arbol principal
-		hijoLista->data = hojaArbol;
-		printf("7\n");
-		(*arbol)->children = hijoLista;
-		printf("8\n");
+struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, *iteracion){
+	if((*lista)->data == NULL){
+		//se crea el nodo hoja (arbol)
+		//struct t_node *hojita = NULL;
+		iniciarArbol(&((*lista)->data));
+		
+		//se le agrega la palabra correspondiente
+		agregarPalabraHoja(&((*lista)->data), frase[iteracion]);
+		//se apunta al siguiente y se le asigna memoria
+		//lista->data = hojita;
+		iniciarLista(&((*lista)->data->children));
+		return (*lista);
 	}
-	/*
-	int iteracion;
-	for(iteracion = 0; )
-	if(arbol->word == NULL){
-		if((arbol->children != NULL) && (arbol->children->data != NULL)){
+	else{
+		if((*lista)->data->word != NULL){
+			if(!strcmp((*lista)->data->word, frase[iteracion])){ //palabra almacenada igual a palabra
+				if((*lista)->data->children == NULL){
+					iniciarLista(&((*lista)->data->children));
+				}
+				if((*lista)->data->children->next == NULL){
+					iniciarLista(&((*lista)->data->children->next));
+				}
 
+				(*lista)->data->children->next = recuAgregarDatos((*lista)->data->children->next, frase, &(++iteracion));
+			}
+			else{
+				if((*lista)->data->children == NULL){
+					iniciarLista(&((*lista)->data->children));
+				}
+				(*lista)->data->children = recuAgregarDatos(&((*lista)->data->children), &frase[iteracion]);
+				return (*lista);
+			}
 		}
-	}*/
+		else{/*
+			//se le agrega la palabra correspondiente
+			agregarPalabraHoja(&(lista->data), frase[iteracion]);
 
+			//se apunta al siguiente y se le asigna memoria
+			lista = lista->data->children;
+			iniciarLista(&lista);
+			continue;*/
+		}
+	}
+}
+
+void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens){
+	struct l_node *lista = NULL;
+	if((*arbol)->children == NULL){// primera ejecucion del arblo
+		iniciarLista(&lista);
+		(*arbol)->children = lista;
+	}
+	else{
+		lista = (*arbol)->children;
+	}
+
+	for(int iteracion = 0; iteracion < n_tokens; iteracion++){
+		(*arbol)->children = recuAgregarDatos(&((*arbol)->children), frase[iteracion], frase, &iteracion);
+	}
 }
