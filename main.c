@@ -66,12 +66,10 @@ int main(){
 	printf("%s\n", arbol->children->data->word);
 	printf("%s\n", arbol->children->data->children->data->word);
 
-	arbol->callback = ejemplo;
-	arbol->callback("alf");
+	//arbol->callback = ejemplo;
+	//arbol->callback("alf");
 	agregarFuncionArbol(&arbol, ejemplo, frase, 2);
 	
-
-
 
 	frase[1][0] = 'w';
 	frase[1][1] = 'e';
@@ -79,10 +77,14 @@ int main(){
 	frase[1][3] = 'n';
 	frase[1][4] = '\0';
 	agregarDatosArbol(&arbol, frase, 2);
+	agregarFuncionArbol(&arbol, ejemplo, frase, 2);
 
 	printf("\n%s\n", arbol->children->data->word);
 	printf("%s\n", arbol->children->data->children->next->data->word);
 
+
+	printf("\n\n\n\n");
+	arbol->children->data->children->next->data->callback("mono");
 //	leerConsola();
 	return 0;
 }

@@ -87,7 +87,38 @@ void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens){
 	}
 }
 
+struct t_node *recuAgregarFuncion(struct t_node **arbol, void (*callback)(const char *), char **frase, size_t n_tokens, int iteracion){
+	if((*arbol)->children->data != NULL){
+		if(((*arbol)->children->data->word != NULL) && (!strcmp((*arbol)->children->data->word, frase[iteracion]))){
+			if((iteracion+1) == n_tokens){
+				(*arbol)->children->data->callback = callback;
+			}
+			else if((iteracion+1) < n_tokens){
+				(*arbol)->children->data = recuAgregarFuncion(&((*arbol)->children->data), callback, frase, n_tokens, iteracion+1);
+			}
+			return (*arbol);
+		}
+	}
+	if((*arbol)->children->next != NULL){
+		if(((*arbol)->children->next->data != NULL) && ((*arbol)->children->next->data->word != NULL)){
+			if(!strcmp((*arbol)->children->next->data->word , frase[iteracion])){
+				if((iteracion+1) == n_tokens){
+					(*arbol)->children->next->data->callback = callback;
+				}
+				else if((iteracion+1) < n_tokens){
+					(*arbol)->children->next->data = recuAgregarFuncion(&((*arbol)->children->next->data), callback, frase, n_tokens, iteracion+1);
+				}
+				return (*arbol);
+			}
+		}
+	}
+	return (*arbol);
+}
+
 void agregarFuncionArbol(struct t_node **arbol, void (*callback)(const char *), char **frase, size_t n_tokens){
-	(*arbol)->callback = callback;
-	((*arbol)->callback)("alf");
+	(*arbol) = recuAgregarFuncion(arbol, callback, frase, n_tokens, 0);
+}
+
+void llamarFuncionCallback(struct t_node *arbol, const char *argumento, char **frase, size_t n_tokens){
+	
 }
