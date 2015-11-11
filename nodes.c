@@ -99,3 +99,41 @@ void llamarCallback(struct l_node *lista, const char *argumento, char **frase, s
 void llamarFuncionCallback(struct t_node *arbol, const char *argumento, char **frase, size_t n_tokens){
 	llamarCallback(arbol->children, argumento, frase, n_tokens, 0);
 }
+
+void freeLista(struct l_node **lista){
+	if((*lista) != NULL){
+		printf("if((*lista) != NULL)\n");
+		if((*lista)->data != NULL){
+			printf("\tif((*lista)->data != NULL)\n");
+			if((*lista)->data->word != NULL){
+				printf("\t\tfree((*lista)->data->word)\n");
+				free((*lista)->data->word);
+				printf("\t\t\tfree((*lista)->data->word)\n");
+			}
+			if((*lista)->data->children != NULL){
+				printf("\t\tif((*lista)->data->children != NULL)\n");
+				freeLista(&((*lista)->data->children));
+				printf("\t\t\tfreeLista(&((*lista)->data->children));\n");
+				free((*lista)->data->children);
+				printf("\t\t\tfree((*lista)->data->children)\n");
+			}
+			free((*lista)->data);
+			printf("\t\tfree((*lista)->data\n");
+		}
+		if((*lista)->next != NULL){
+			printf("\tif((*lista)->next != NULL)\n");
+			freeLista(&((*lista)->next));
+			printf("\t\tfreeLista(&((*lista)->next))\n");
+			free((*lista)->next);
+			printf("\t\tfree((*lista)->next)\n");
+		}
+		printf("\tsubiendo\n");
+	}
+}
+
+void freeArbol(struct t_node **arbol){
+	if((*arbol) != NULL){
+		freeLista(&((*arbol)->children));
+	}
+	free((*arbol));
+}

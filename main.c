@@ -1,5 +1,6 @@
 #include "split.h" //arreglar warning de split.c
 #include "nodes.h"
+#include "unistd.h"
 
 
 int tamanoArreglo(char *arreglo){
@@ -46,7 +47,32 @@ void ejemplo(const char *alf){
 	printf("hello %s!\n", alf);
 }
 
+int fileExists(const char *fname){
+	if(access(fname, F_OK) != -1){
+		return 1;
+	}
+	return 0;
+}
+
+int mensajeError(const char *palabra){
+	if(!fileExists(palabra)){
+		printf("\n\t[ERROR]\n\t\tNo se ha encontrado el archivo %s\n\t[ERROR]\n\n", palabra);
+		return 1;
+	}
+	return 0;
+}
+
+void endExecution(const char *palabra){ //funcion 0;
+	if(strcmp("noargs", palabra)){ //son distintas
+		if(!mensajeError(palabra)){
+			//abrir archivo
+		}
+	}
+	exit(0);
+}
+
 int main(){
+	printf("%d\n", fileExists("la wea weon qlo"));
 	struct t_node *arbol = NULL;
 	iniciarArbol(&arbol);
 	size_t n_tokens1 = NULL, n_tokens2 = NULL, n_tokens3 = NULL, n_tokens4 = NULL, n_tokens5 = NULL;
@@ -74,6 +100,8 @@ int main(){
 	llamarFuncionCallback(arbol, "alf", frase4, n_tokens4);
 	llamarFuncionCallback(arbol, "alf", frase5, n_tokens5);
 	llamarFuncionCallback(arbol, "alf", frase1, n_tokens1);
+
+	freeArbol(&arbol);
 /*
 	printf("%s\n", arbol->children->data->word);
 	printf("%s\n", arbol->children->data->children->data->word);
@@ -95,30 +123,7 @@ int main(){
 	printf("%s\n", arbol->children->next->next->next->data->children->data->word);
 	printf("%s\n", arbol->children->next->next->next->data->children->data->children->data->word);
 */
-//	llamarFuncionCallback(arbol, "alf", frase1, n_tokens1);
-//	printf("%s\n", arbol->children->data->word);
-//	printf("%s\n", arbol->children->data->children->data->word);
 
-	//arbol->callback = ejemplo;
-	//arbol->callback("alf");*/
-/*	agregarFuncionArbol(&arbol, ejemplo, frase, 2);
-	printf("\nllamar funcion\n");
-	llamarFuncionCallback(arbol, "alf", frase, 2);
-
-	frase[1][0] = 'w';
-	frase[1][1] = 'e';
-	frase[1][2] = 'o';
-	frase[1][3] = 'n';
-	frase[1][4] = '\0';
-	agregarDatosArbol(&arbol, frase, 2);
-	agregarFuncionArbol(&arbol, ejemplo, frase, 2);
-*/
-//	printf("\n%s\n", arbol->children->data->word);
-//	printf("%s\n", arbol->children->data->children->next->data->word);
-
-
-//	printf("\n\n\n\n");
-//	arbol->children->data->children->next->data->callback("mono");
 //	leerConsola();
 	return 0;
 }

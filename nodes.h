@@ -40,5 +40,9 @@ void llamarCallback(struct l_node *lista, const char *argumento, char **frase, s
 //funcion que recibe al *arbol, busca la rama que coincide con la **frase y llama a la funcion, dandole *argumento
 void llamarFuncionCallback(struct t_node *arbol, const char *argumento, char **frase, size_t n_tokens);
 
+//funciones que liberan la memoria usada en el **arbol
+//se recomienda llamar a freeArbol
+void freeLista(struct l_node **lista);
+void freeArbol(struct t_node **arbol);
 
 #endif
