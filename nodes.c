@@ -18,107 +18,84 @@ void agregarPalabraHoja(struct t_node **hoja, char *palabra){
 	strcpy((*hoja)->word, palabra);
 }
 
-struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int *iteracion){
-	if((*lista)->data == NULL){
-		printf("\t((*lista)->data == NULL) %d\n", *iteracion);
-		//se crea el nodo hoja (arbol)
-		//struct t_node *hojita = NULL;
-		iniciarArbol(&((*lista)->data));
-		
-		//se le agrega la palabra correspondiente
-		agregarPalabraHoja(&((*lista)->data), frase[*iteracion]);
-		//se apunta al siguiente y se le asigna memoria
-		//lista->data = hojita;
-		iniciarLista(&((*lista)->data->children));
+struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int iteracion, size_t n_tokens, void (*callback)(const char *)){
+	if(iteracion >= n_tokens){
+		if((*lista) == NULL){
+			iniciarLista(&(*lista));
+		}
+		if((*lista)->data == NULL){
+			iniciarArbol(&((*lista)->data));
+		}
+		if((*lista)->data->callback == NULL){
+			(*lista)->data->callback = callback;
+		}
 		return (*lista);
 	}
-	else{
-		printf("\telse ((*lista)->data == NULL) %d\n", *iteracion);
-		if((*lista)->data->word != NULL){
-			printf("\t((*lista)->data->word != NULL) %d\n", *iteracion);
-			if(!strcmp((*lista)->data->word, frase[*iteracion])){ //palabra almacenada igual a palabra
-				printf("\t(!strcmp((*lista)->data->word, frase[*iteracion])) %d\n", *iteracion);
-				if((*lista)->data->children == NULL){
-					iniciarLista(&((*lista)->data->children));
+	if((*lista) != NULL){
+		if((*lista)->data != NULL){
+			if((*lista)->data->word != NULL){
+				if(!strcmp((*lista)->data->word, frase[iteracion])){ //son iguales
+					(*lista)->data->children = recuAgregarDatos(&((*lista)->data->children), frase, iteracion+1, n_tokens, callback);
+					return (*lista);
 				}
-				if((*lista)->data->children->next == NULL){
-					iniciarLista(&((*lista)->data->children->next));
+				else{
+					(*lista)->next = recuAgregarDatos(&((*lista)->next), frase, iteracion, n_tokens, callback);
+					return (*lista);
 				}
-				++(*iteracion);
-				(*lista)->data->children->next = recuAgregarDatos(&((*lista)->data->children->next), frase, iteracion);
-				return (*lista);
-
 			}
 			else{
-				printf("\telse (!strcmp((*lista)->data->word, frase[*iteracion])) %d\n", *iteracion);
-				if((*lista)->data->children == NULL){
-					iniciarLista(&((*lista)->data->children));
-				}
-				(*lista)->data->children = recuAgregarDatos(&((*lista)->data->children), frase, iteracion);
+				agregarPalabraHoja(&(*lista)->data, frase[iteracion]);
 				return (*lista);
 			}
 		}
 		else{
-			printf("\telse ((*lista)->data->word != NULL) %d\n", *iteracion);
-			
-			agregarPalabraHoja(&((*lista)->data), frase[*iteracion]);
-			//se apunta al siguiente y se le asigna memoria
-			//lista->data = hojita;
-			iniciarLista(&((*lista)->data->children));
+			iniciarArbol(&((*lista)->data));
+			agregarPalabraHoja(&((*lista)->data), frase[iteracion]);
+			(*lista)->data->children = recuAgregarDatos(&((*lista)->data->children), frase, iteracion+1, n_tokens, callback);
 			return (*lista);
-			}
-	}
-	return NULL;
-}
-
-void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens){
-	struct l_node *lista = NULL;
-	if((*arbol)->children == NULL){// primera ejecucion del arblo
-		iniciarLista(&lista);
-		(*arbol)->children = lista;
+		}
 	}
 	else{
-		lista = (*arbol)->children;
-	}
-
-	for(int iteracion = 0; iteracion < n_tokens; iteracion++){
-		printf("iteracion %d\n", iteracion);
-		(*arbol)->children = recuAgregarDatos(&((*arbol)->children), frase, &iteracion);
+		iniciarLista(&(*lista));
+		iniciarArbol(&((*lista)->data));
+		agregarPalabraHoja(&((*lista)->data), frase[iteracion]);
+		(*lista)->data->children = recuAgregarDatos(&((*lista)->data->children), frase, iteracion+1, n_tokens, callback);
+		return (*lista);
 	}
 }
 
-struct t_node *recuAgregarFuncion(struct t_node **arbol, void (*callback)(const char *), char **frase, size_t n_tokens, int iteracion){
-	if((*arbol)->children->data != NULL){
-		if(((*arbol)->children->data->word != NULL) && (!strcmp((*arbol)->children->data->word, frase[iteracion]))){
-			if((iteracion+1) == n_tokens){
-				(*arbol)->children->data->callback = callback;
-			}
-			else if((iteracion+1) < n_tokens){
-				(*arbol)->children->data = recuAgregarFuncion(&((*arbol)->children->data), callback, frase, n_tokens, iteracion+1);
-			}
-			return (*arbol);
-		}
+void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, void (*callback)(const char *)){
+	if((*arbol)->children == NULL){// primera ejecucion del arblo
+		iniciarLista(&((*arbol)->children));
 	}
-	if((*arbol)->children->next != NULL){
-		if(((*arbol)->children->next->data != NULL) && ((*arbol)->children->next->data->word != NULL)){
-			if(!strcmp((*arbol)->children->next->data->word , frase[iteracion])){
-				if((iteracion+1) == n_tokens){
-					(*arbol)->children->next->data->callback = callback;
-				}
-				else if((iteracion+1) < n_tokens){
-					(*arbol)->children->next->data = recuAgregarFuncion(&((*arbol)->children->next->data), callback, frase, n_tokens, iteracion+1);
-				}
-				return (*arbol);
-			}
-		}
+
+	for(int wea = 0; wea < n_tokens; wea++){
+		(*arbol)->children = recuAgregarDatos(&((*arbol)->children), frase, 0, n_tokens, callback);
 	}
-	return (*arbol);
+	return;
 }
 
-void agregarFuncionArbol(struct t_node **arbol, void (*callback)(const char *), char **frase, size_t n_tokens){
-	(*arbol) = recuAgregarFuncion(arbol, callback, frase, n_tokens, 0);
+void llamarCallback(struct l_node *lista, const char *argumento, char **frase, size_t n_tokens, int iteracion){
+	if(iteracion >= n_tokens){
+		if(lista->data->callback != NULL){
+			lista->data->callback(argumento);
+		}
+		return;
+	}
+	if(lista != NULL){
+		if(lista->data != NULL){
+			if(lista->data->word != NULL){
+				if(!strcmp(lista->data->word, frase[iteracion])){ //son iguales
+					llamarCallback(lista->data->children, argumento, frase, n_tokens, iteracion+1);
+				}
+				else{
+					llamarCallback(lista->next, argumento, frase, n_tokens, iteracion);
+				}
+			}
+		}
+	}
 }
 
 void llamarFuncionCallback(struct t_node *arbol, const char *argumento, char **frase, size_t n_tokens){
-	
+	llamarCallback(arbol->children, argumento, frase, n_tokens, 0);
 }
