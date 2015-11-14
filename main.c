@@ -3,16 +3,6 @@
 #include "unistd.h"
 #include "callbacks.h"
 
-size_t tamanoArreglo(char *arreglo){
-	int tamano;
-	for(tamano = 0; tamano < LARGO; tamano++){
-		if(arreglo[tamano] == '\0'){
-			break;
-		}
-	}
-	return tamano;
-}
-
 int primerNumero(void){
 	int character = getchar();
 	return (int)(character-48);

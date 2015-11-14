@@ -20,6 +20,9 @@ struct l_node{
 	struct l_node *next;
 };
 
+//retorna el tamano de un arreglo caracteres de LARGO o menor tamano
+size_t tamanoArreglo(char *arreglo);
+
 //pide memoria para el arbol y sus partes las apunta a NULL
 void iniciarArbol(struct t_node **arbol);
 //pide memoria para la lista y sus partes las apunta a NULL

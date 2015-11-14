@@ -2,7 +2,7 @@
 #include "callbacks.h"
 
 void terminar_programa(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2;
 		arch1=fopen(nombrearch,"r");
 		char nomarch[50], lineac[256];
@@ -31,7 +31,7 @@ void terminar_programa(char *nombrearch){
 }
 
 void insertar(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2,*arch3;
 		arch1=fopen(nombrearch,"r");
 		char *nomarch, lineac[256], *rawLine;
@@ -79,7 +79,7 @@ void insertar(char *nombrearch){
 }
 
 void eliminar_linea(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2,*arch3;
 		arch1 = fopen(nombrearch,"r");
 		char nomarch[50], lineac[256];
@@ -115,13 +115,13 @@ void eliminar_linea(char *nombrearch){
 }
 
 void eliminar_coincidencia(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 
 	}
 }
 
 void mostrar_por_linea(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2;
 		arch1=fopen(nombrearch,"r");
 		char nomarch[50], lineac[256];
@@ -152,7 +152,7 @@ void mostrar_por_linea(char *nombrearch){
 }
 
 void crear_archivo(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2;
 		arch1=fopen(nombrearch,"r");
 		char nomarch[50];
@@ -170,7 +170,7 @@ void crear_archivo(char *nombrearch){
 }
 
 void eliminar_archivo(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2;
 		arch1=fopen(nombrearch,"r");
 		char nomarch[50];
@@ -194,7 +194,7 @@ void eliminar_archivo(char *nombrearch){
 }
 
 void truncar_archivo(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2;
 		arch1=fopen(nombrearch,"r");
 		char nomarch[50];
@@ -217,7 +217,7 @@ void truncar_archivo(char *nombrearch){
 }
 
 void mostrarDatosOrdenados(char *nombrearch){
-	if(strcmp(nombrearch, "noargs")){
+	if(strcmp(nombrearch, "db/noargs")){
 
 	}
 }

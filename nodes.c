@@ -1,5 +1,15 @@
 #include "nodes.h"
 
+size_t tamanoArreglo(char *arreglo){
+	int tamano;
+	for(tamano = 0; tamano < LARGO; tamano++){
+		if(arreglo[tamano] == '\0'){
+			break;
+		}
+	}
+	return tamano;
+}
+
 void iniciarArbol(struct t_node **arbol){
 	(*arbol) = malloc(sizeof(struct t_node));
 	(*arbol)->children = NULL;
@@ -101,8 +111,22 @@ void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, 
 	llamarCallback(arbol->children, argumento, frase, n_tokens, 0);
 }
 
+char *agregarBD(char *palabra){
+	char *argumento = malloc(sizeof(char)*LARGO);
+	//la forma mas changa de la vida de hacerlo :c
+	argumento[0] = 'd';
+	argumento[1] = 'b';
+	argumento[2] = '/';
+	size_t indice, tamanoFrase = tamanoArreglo(palabra);
+	for(indice = 0; indice < tamanoFrase; indice++){
+		argumento[indice+3] = palabra[indice];
+	}
+	return argumento;
+}
+
 void ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens){
-	llamarFuncionCallback(arbol, frase[n_tokens-1], frase, n_tokens-1);
+	char *argumento = agregarBD(frase[n_tokens-1]);
+	llamarFuncionCallback(arbol, argumento, frase, n_tokens-1);
 }
 
 void freeLista(struct l_node **lista){
