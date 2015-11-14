@@ -1,9 +1,9 @@
 #ifndef SPLIT_H
 #define SPLIT_H
 
-#include "stdlib.h"
-#include "string.h"
+#include <string.h>
+#include <stdlib.h>
 
-char **split(const char *phrase, const size_t length, const char delimiter, size_t *n_tokens);
+char **split(char *phrase, const size_t length, const char delimiter, size_t *n_tokens);
 
 #endif
