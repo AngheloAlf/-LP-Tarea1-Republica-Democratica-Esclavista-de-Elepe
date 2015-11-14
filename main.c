@@ -20,7 +20,7 @@ int primerNumero(void){
 
 char *leerComando(void){
 	char *comando = malloc(sizeof(char) * LARGO);
-	int character = getchar();
+	int character;
 	int indice = 0;
 	while((character = getchar()) != '\n'){
 		comando[indice] = character;
@@ -31,10 +31,6 @@ char *leerComando(void){
 	}
 	comando[++indice] = '\0';
 	return comando;
-}
-
-void ejemplo(char *alf){
-	printf("hello %s!\n", alf);
 }
 
 int main(){
@@ -65,6 +61,7 @@ int main(){
 	for(iteracion = 0; iteracion < cantidadInstrucciones; iteracion++){ //leyendo los comandos
 		printf(">> ");
 		indiceFuncion = primerNumero(); //se lee el numero de funcion
+		getchar();
 		comando = leerComando(); //se lee el resto del comando
 		comandoProcesado = split(comando, tamanoArreglo(comando), ' ', &tamanoComandoProcesado); // se splitea
 
@@ -79,8 +76,16 @@ int main(){
 
 	printf("\n");
 
+	char *comandoARealiar = NULL;
+	char **comandoARealiarSpliteado;
+	size_t tamanoComandoARealizar;
 	while(1){
-		
+		printf("> ");
+		comandoARealiar = leerComando();
+
+		comandoARealiarSpliteado = split(comandoARealiar, tamanoArreglo(comandoARealiar), ' ', &tamanoComandoARealizar);
+
+		ejecutarFuncionArbol(arbol, comandoARealiarSpliteado, tamanoComandoARealizar);
 	}
 
 	return 0;

@@ -101,6 +101,10 @@ void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, 
 	llamarCallback(arbol->children, argumento, frase, n_tokens, 0);
 }
 
+void ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens){
+	llamarFuncionCallback(arbol, frase[n_tokens-1], frase, n_tokens-1);
+}
+
 void freeLista(struct l_node **lista){
 	if((*lista) != NULL){
 		if((*lista)->data != NULL){
