@@ -24,8 +24,8 @@ void terminar_programa(char *nombrearch){
 					fclose(arch2);
 				}
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 	exit(0);
 }
@@ -73,8 +73,8 @@ void insertar(char *nombrearch){
 				}
 
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 }
 
@@ -109,8 +109,8 @@ void eliminar_linea(char *nombrearch){
 				}
 
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 }
 
@@ -146,8 +146,8 @@ void mostrar_por_linea(char *nombrearch){
 					fclose(arch2);
 				}
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 }
 
@@ -164,8 +164,8 @@ void crear_archivo(char *nombrearch){
 				arch2=fopen(nomarch,"w");
 				fclose(arch2);
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 }
 
@@ -188,8 +188,8 @@ void eliminar_archivo(char *nombrearch){
 					fclose(arch2);
 				}
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 }
 
@@ -211,8 +211,8 @@ void truncar_archivo(char *nombrearch){
 					fclose(arch2);
 				}
 			}
+			fclose(arch1);
 		}
-		fclose(arch1);
 	}
 }
 
