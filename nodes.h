@@ -12,7 +12,7 @@ struct l_node;
 struct t_node{
 	struct l_node *children;
 	char *word;
-	void (*callback)(const char *);
+	void (*callback)(char *);
 };
 
 struct l_node{
@@ -29,16 +29,16 @@ void agregarPalabraHoja(struct t_node **hoja, char *palabra);
 
 //funcion recursiva para agregar las palabras y la funcion al arbol
 //no se recomienda usar
-struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int iteracion, size_t n_tokens, void (*callback)(const char *));
+struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int iteracion, size_t n_tokens, void (*callback)(char *));
 //funcion que recibe al **arbol, el arreglo de palabras, la cantidad de palabras y la funcion a agregar
 //para agregar palabras/funciones al arbol hay que llamar a esta funcion
-void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, void (*callback)(const char *));
+void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, void (*callback)(char *));
 
 //no se recomienda usar
 //funcion recursiva que recorre el arbol y llama a la funcion que encuentre
-void llamarCallback(struct l_node *lista, const char *argumento, char **frase, size_t n_tokens, int iteracion);
+void llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion);
 //funcion que recibe al *arbol, busca la rama que coincide con la **frase y llama a la funcion, dandole *argumento
-void llamarFuncionCallback(struct t_node *arbol, const char *argumento, char **frase, size_t n_tokens);
+void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, size_t n_tokens);
 
 //funciones que liberan la memoria usada en el **arbol
 //se recomienda llamar a freeArbol

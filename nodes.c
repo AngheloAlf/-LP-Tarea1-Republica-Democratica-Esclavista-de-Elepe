@@ -18,7 +18,7 @@ void agregarPalabraHoja(struct t_node **hoja, char *palabra){
 	strcpy((*hoja)->word, palabra);
 }
 
-struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int iteracion, size_t n_tokens, void (*callback)(const char *)){
+struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int iteracion, size_t n_tokens, void (*callback)(char *)){
 	if(iteracion >= n_tokens){
 		if((*lista) == NULL){
 			iniciarLista(&(*lista));
@@ -64,18 +64,19 @@ struct l_node *recuAgregarDatos(struct l_node **lista, char **frase, int iteraci
 	}
 }
 
-void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, void (*callback)(const char *)){
+void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, void (*callback)(char *)){
 	if((*arbol)->children == NULL){// primera ejecucion del arblo
 		iniciarLista(&((*arbol)->children));
 	}
 
-	for(int wea = 0; wea < n_tokens; wea++){
+	int wea;
+	for(wea = 0; wea < n_tokens; wea++){
 		(*arbol)->children = recuAgregarDatos(&((*arbol)->children), frase, 0, n_tokens, callback);
 	}
 	return;
 }
 
-void llamarCallback(struct l_node *lista, const char *argumento, char **frase, size_t n_tokens, int iteracion){
+void llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion){
 	if(iteracion >= n_tokens){
 		if(lista->data->callback != NULL){
 			lista->data->callback(argumento);
@@ -96,38 +97,26 @@ void llamarCallback(struct l_node *lista, const char *argumento, char **frase, s
 	}
 }
 
-void llamarFuncionCallback(struct t_node *arbol, const char *argumento, char **frase, size_t n_tokens){
+void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, size_t n_tokens){
 	llamarCallback(arbol->children, argumento, frase, n_tokens, 0);
 }
 
 void freeLista(struct l_node **lista){
 	if((*lista) != NULL){
-		printf("if((*lista) != NULL)\n");
 		if((*lista)->data != NULL){
-			printf("\tif((*lista)->data != NULL)\n");
 			if((*lista)->data->word != NULL){
-				printf("\t\tfree((*lista)->data->word)\n");
 				free((*lista)->data->word);
-				printf("\t\t\tfree((*lista)->data->word)\n");
 			}
 			if((*lista)->data->children != NULL){
-				printf("\t\tif((*lista)->data->children != NULL)\n");
 				freeLista(&((*lista)->data->children));
-				printf("\t\t\tfreeLista(&((*lista)->data->children));\n");
 				free((*lista)->data->children);
-				printf("\t\t\tfree((*lista)->data->children)\n");
 			}
 			free((*lista)->data);
-			printf("\t\tfree((*lista)->data\n");
 		}
 		if((*lista)->next != NULL){
-			printf("\tif((*lista)->next != NULL)\n");
 			freeLista(&((*lista)->next));
-			printf("\t\tfreeLista(&((*lista)->next))\n");
 			free((*lista)->next);
-			printf("\t\tfree((*lista)->next)\n");
 		}
-		printf("\tsubiendo\n");
 	}
 }
 
