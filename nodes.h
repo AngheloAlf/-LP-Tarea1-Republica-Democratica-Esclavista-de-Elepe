@@ -1,7 +1,7 @@
 #ifndef NODES_H
 #define NODES_H
 
-#define LARGO 50
+#define LARGO 256
 
 #include "stdlib.h"
 #include "string.h"

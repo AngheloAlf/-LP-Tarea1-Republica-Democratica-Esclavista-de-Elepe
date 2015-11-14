@@ -168,6 +168,7 @@ void crear_archivo(char *nombrearch){
 		fclose(arch1);
 	}
 }
+
 void eliminar_archivo(char *nombrearch){
 	if(strcmp(nombrearch, "noargs")){
 		FILE *arch1,*arch2;
