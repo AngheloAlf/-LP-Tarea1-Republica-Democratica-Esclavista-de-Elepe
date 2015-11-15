@@ -1,11 +1,8 @@
 #ifndef NODES_H
 #define NODES_H
 
-#define LARGO 256
-
-#include "stdlib.h"
 #include "string.h"
-#include "stdio.h"
+#include "functions.h"
 
 struct l_node;
 
@@ -19,9 +16,6 @@ struct l_node{
 	struct t_node *data;
 	struct l_node *next;
 };
-
-//retorna el tamano de un arreglo caracteres de LARGO o menor tamano
-size_t tamanoArreglo(char *arreglo);
 
 //pide memoria para el arbol y sus partes las apunta a NULL
 void iniciarArbol(struct t_node **arbol);

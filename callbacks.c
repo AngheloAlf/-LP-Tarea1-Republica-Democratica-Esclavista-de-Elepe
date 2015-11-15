@@ -59,7 +59,7 @@ void insertar(char *nombrearch){
 					while(fscanf(arch2,"%s",lineac)==1){
 						if(cont==linea){
 							for(indice = 2; indice < n_tokens; indice++){
-								fprintf(arch2, "%s", inputLine[indice]);
+								fprintf(arch2, "%s ", inputLine[indice]);
 							}
 							fprintf(arch2, "\n");
 						}
@@ -114,9 +114,41 @@ void eliminar_linea(char *nombrearch){
 	}
 }
 
-void eliminar_coincidencia(char *nombrearch){
+void eliminar_coincidencia(char *nombrearch){ //Base de eliminar lineas
 	if(strcmp(nombrearch, "db/noargs")){
+		FILE *arch1,*arch2,*arch3;
+		arch1 = fopen(nombrearch,"r");
+		char nomarch[50], lineac[256], kiWord[50];
+		int linea;
+		size_t n_tokens;
+		char **inputLine;
+		if (arch1==NULL){
+			printf(">>>ARCHIVO %s NO EXISTE\n",nombrearch );
+		}
+		else{
+			while(fscanf(arch1,"%s %d %s",nomarch,&linea,kiWord)==1){
+				arch2=fopen(nomarch,"r");
+				if (arch2==NULL){
+					printf(">>>ARCHIVO %s NO EXISTE\n",nomarch);
+				}
+				else{
+					arch3=fopen("nuarch","w");
+					while(fscanf(arch2," %[^\n]s",lineac)==1){ //Linea completa
+						inputLine=split(lineac,strlen(lineac),' ',&n_tokens);
+						if (!strcmp(inputLine[linea],kiWord)){
+							continue;
+						}
+						fprintf(arch3, "%s\n",lineac );
+					}
+					remove(nomarch);
+					rename("nuarch",nomarch);
+					fclose(arch2);
+					fclose(arch3);
+				}
 
+			}
+			fclose(arch1);
+		}
 	}
 }
 

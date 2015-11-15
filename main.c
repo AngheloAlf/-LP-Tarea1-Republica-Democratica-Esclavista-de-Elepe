@@ -2,26 +2,7 @@
 #include "nodes.h"
 #include "unistd.h"
 #include "callbacks.h"
-
-int primerNumero(void){
-	int character = getchar();
-	return (int)(character-48);
-}
-
-char *leerComando(void){
-	char *comando = malloc(sizeof(char) * LARGO);
-	int character;
-	int indice = 0;
-	while((character = getchar()) != '\n'){
-		comando[indice] = character;
-		indice++;
-		if(indice >= LARGO){
-			break;
-		}
-	}
-	comando[++indice] = '\0';
-	return comando;
-}
+#include "functions.h"
 
 int main(){
 	//se inicia el arbol
