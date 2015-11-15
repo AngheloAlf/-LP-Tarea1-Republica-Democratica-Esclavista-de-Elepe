@@ -32,7 +32,7 @@ size_t tamanoArreglo(char *arreglo){
 
 char *agregarBD(char *palabra){
 	char *argumento = malloc(sizeof(char)*LARGO);
-	//la forma mas changa de la vida de hacerlo :c
+	//la forma mas changa de la vida para hacerlo :c
 	argumento[0] = 'd';
 	argumento[1] = 'b';
 	argumento[2] = '/';

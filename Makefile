@@ -12,7 +12,7 @@ split.o: split.c
 nodes.o: nodes.c
 	gcc nodes.c -c -Wall
 
-callbacks.o: callbacks.c
+callbacks.o: callbacks.c split.h functions.h
 	gcc callbacks.c -c -Wall
 
 functions.o: functions.c

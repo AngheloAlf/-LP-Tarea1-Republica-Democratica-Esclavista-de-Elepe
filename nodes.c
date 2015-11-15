@@ -79,6 +79,7 @@ void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, voi
 void llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion){
 	if(iteracion >= n_tokens){
 		if(lista->data->callback != NULL){
+			printf("se encontro el callback\n");
 			lista->data->callback(argumento);
 		}
 		return;
@@ -103,7 +104,9 @@ void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, 
 
 void ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens){
 	char *argumento = agregarBD(frase[n_tokens-1]);
+	printf("se va a llamar\n");
 	llamarFuncionCallback(arbol, argumento, frase, n_tokens-1);
+	printf("ya se llamo\n");
 }
 
 void freeLista(struct l_node **lista){

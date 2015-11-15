@@ -53,10 +53,12 @@ int main(){
 	while(1){
 		printf("> ");
 		comandoARealiar = leerComando();
-
-		comandoARealiarSpliteado = split(comandoARealiar, tamanoArreglo(comandoARealiar), ' ', &tamanoComandoARealizar);
-
-		ejecutarFuncionArbol(arbol, comandoARealiarSpliteado, tamanoComandoARealizar);
+		
+		if(tamanoArreglo(comandoARealiar)>0){
+			comandoARealiarSpliteado = split(comandoARealiar, tamanoArreglo(comandoARealiar), ' ', &tamanoComandoARealizar);
+			
+			ejecutarFuncionArbol(arbol, comandoARealiarSpliteado, tamanoComandoARealizar);
+		}
 	}
 
 	return 0;
