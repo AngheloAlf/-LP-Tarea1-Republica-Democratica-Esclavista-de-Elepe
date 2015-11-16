@@ -33,11 +33,9 @@ void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, voi
 
 //no se recomienda usar
 //funcion recursiva que recorre el arbol y llama a la funcion que encuentre
-void llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion);
-//funcion que recibe al *arbol, busca la rama que coincide con la **frase y llama a la funcion, dandole *argumento
-void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, size_t n_tokens);
-//funcion auxiliar que facilita el la ejecucion del codigo debido a las circunstancias
-void ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens);
+int llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion);
+//funcion auxiliar que facilita el la ejecucion del codigo
+int ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens);
 
 //funciones que liberan la memoria usada en el **arbol
 //se recomienda llamar a freeArbol

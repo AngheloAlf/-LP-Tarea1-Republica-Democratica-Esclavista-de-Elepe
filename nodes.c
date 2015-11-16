@@ -76,37 +76,31 @@ void agregarDatosArbol(struct t_node **arbol, char **frase, size_t n_tokens, voi
 	return;
 }
 
-void llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion){
+int llamarCallback(struct l_node *lista, char *argumento, char **frase, size_t n_tokens, int iteracion){
 	if(iteracion >= n_tokens){
 		if(lista->data->callback != NULL){
-			printf("se encontro el callback\n");
 			lista->data->callback(argumento);
 		}
-		return;
+		return 1;
 	}
 	if(lista != NULL){
 		if(lista->data != NULL){
 			if(lista->data->word != NULL){
 				if(!strcmp(lista->data->word, frase[iteracion])){ //son iguales
-					llamarCallback(lista->data->children, argumento, frase, n_tokens, iteracion+1);
+					return llamarCallback(lista->data->children, argumento, frase, n_tokens, iteracion+1);
 				}
 				else{
-					llamarCallback(lista->next, argumento, frase, n_tokens, iteracion);
+					return llamarCallback(lista->next, argumento, frase, n_tokens, iteracion);
 				}
 			}
 		}
 	}
+	return 0;
 }
 
-void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, size_t n_tokens){
-	llamarCallback(arbol->children, argumento, frase, n_tokens, 0);
-}
-
-void ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens){
+int ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens){
 	char *argumento = agregarDB(frase[n_tokens-1]);
-	printf("se va a llamar\n");
-	llamarFuncionCallback(arbol, argumento, frase, n_tokens-1);
-	printf("ya se llamo\n");
+	return llamarCallback(arbol->children, argumento, frase, n_tokens-1, 0);
 }
 
 void freeLista(struct l_node **lista){

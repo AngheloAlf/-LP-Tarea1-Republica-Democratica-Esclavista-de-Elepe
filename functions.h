@@ -7,6 +7,8 @@
 #include "stdio.h"
 #include "string.h"
 
+extern int ejecucion;
+
 int primerNumero(void);
 char *leerComando(void);
 char *agregarDB(char *palabra);

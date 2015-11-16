@@ -8,3 +8,7 @@
 we can perfectly have more than one command bound to the same action populate.cmds
 howdoyouturnthison create.cmds
 it does not matter the length of the command it should work anyways populate.cmds
+it does not matter show.cmds
+DELETE FROM FILE WHERE INDEX=KEYWORD delete.cmds
+it does not matter show.cmds
+we can perfectly do whatever we want noargs

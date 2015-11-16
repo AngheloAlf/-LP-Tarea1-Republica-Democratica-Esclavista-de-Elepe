@@ -1,11 +1,18 @@
 #include "functions.h"
 
+int ejecucion = 1;
+
 int primerNumero(void){
 	int character = getchar();
 	return (int)(character-48);
 }
 
 char *leerComando(void){
+	/*
+	char *comando = malloc(sizeof(char) * LARGO);
+	scanf(" %[^\n]s",comando);
+	return comando;*/
+
 	char *comando = malloc(sizeof(char) * LARGO);
 	int character;
 	int indice = 0;

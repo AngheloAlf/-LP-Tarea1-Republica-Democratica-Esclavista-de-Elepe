@@ -44,21 +44,40 @@ int main(){
 			agregarDatosArbol(&arbol, comandoProcesado, tamanoComandoProcesado, arregloCallbacks[9]);
 		}
 	}
+	free(comando);
+	free(comandoProcesado);
 
 	printf("\n");
 
 	char *comandoARealiar = NULL;
 	char **comandoARealiarSpliteado;
 	size_t tamanoComandoARealizar;
-	while(1){
+	int comandoExiste, iterandoArreglos;
+	while(ejecucion){
+		comandoExiste = 0;
 		printf("> ");
 		comandoARealiar = leerComando();
 		
 		if(strlen(comandoARealiar)>0){
 			comandoARealiarSpliteado = split(comandoARealiar, strlen(comandoARealiar), ' ', &tamanoComandoARealizar);
+
+			comandoExiste = ejecutarFuncionArbol(arbol, comandoARealiarSpliteado, tamanoComandoARealizar);
 			
-			ejecutarFuncionArbol(arbol, comandoARealiarSpliteado, tamanoComandoARealizar);
+			if(!comandoExiste){
+				printf(">>>No existe el comando [");
+				for(iterandoArreglos = 0; iterandoArreglos<(tamanoComandoARealizar-1); iterandoArreglos++){
+					printf("%s", comandoARealiarSpliteado[iterandoArreglos]);
+					if(iterandoArreglos<tamanoComandoARealizar-2){
+						printf(" ");
+					}
+				}
+				printf("]\n");
+			}
 		}
+		
 	}
+	free(comandoARealiar);
+	free(comandoARealiarSpliteado);
+	freeArbol(&arbol);
 	return 0;
 }
