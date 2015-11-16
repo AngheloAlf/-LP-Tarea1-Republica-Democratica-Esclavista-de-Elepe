@@ -34,7 +34,7 @@ int main(){
 		indiceFuncion = primerNumero(); //se lee el numero de funcion
 		getchar();
 		comando = leerComando(); //se lee el resto del comando
-		comandoProcesado = split(comando, tamanoArreglo(comando), ' ', &tamanoComandoProcesado); // se splitea
+		comandoProcesado = split(comando, strlen(comando), ' ', &tamanoComandoProcesado); // se splitea
 
 		//se agrega el comando y la funcion al arbol
 		if(indiceFuncion < 8){
@@ -54,12 +54,11 @@ int main(){
 		printf("> ");
 		comandoARealiar = leerComando();
 		
-		if(tamanoArreglo(comandoARealiar)>0){
-			comandoARealiarSpliteado = split(comandoARealiar, tamanoArreglo(comandoARealiar), ' ', &tamanoComandoARealizar);
+		if(strlen(comandoARealiar)>0){
+			comandoARealiarSpliteado = split(comandoARealiar, strlen(comandoARealiar), ' ', &tamanoComandoARealizar);
 			
 			ejecutarFuncionArbol(arbol, comandoARealiarSpliteado, tamanoComandoARealizar);
 		}
 	}
-
 	return 0;
 }

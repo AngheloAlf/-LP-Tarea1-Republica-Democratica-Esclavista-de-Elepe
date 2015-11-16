@@ -103,7 +103,7 @@ void llamarFuncionCallback(struct t_node *arbol, char *argumento, char **frase, 
 }
 
 void ejecutarFuncionArbol(struct t_node *arbol, char **frase, size_t n_tokens){
-	char *argumento = agregarBD(frase[n_tokens-1]);
+	char *argumento = agregarDB(frase[n_tokens-1]);
 	printf("se va a llamar\n");
 	llamarFuncionCallback(arbol, argumento, frase, n_tokens-1);
 	printf("ya se llamo\n");

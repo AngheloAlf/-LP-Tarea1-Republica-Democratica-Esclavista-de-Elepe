@@ -20,27 +20,11 @@ char *leerComando(void){
 	return comando;
 }
 
-size_t tamanoArreglo(char *arreglo){
-	int tamano;
-	for(tamano = 0; tamano < LARGO; tamano++){
-		if(arreglo[tamano] == '\0'){
-			break;
-		}
-	}
-	return tamano;
-}
-
-char *agregarBD(char *palabra){
+char *agregarDB(char *palabra){
 	char *argumento = malloc(sizeof(char)*LARGO);
-	//la forma mas changa de la vida para hacerlo :c
-	argumento[0] = 'd';
-	argumento[1] = 'b';
-	argumento[2] = '/';
-	size_t indice, tamanoFrase = tamanoArreglo(palabra);
-	for(indice = 0; indice < tamanoFrase; indice++){
-		argumento[indice+3] = palabra[indice];
-	}
-	argumento[indice+3] = '\0';
+	strcpy(argumento, "db/");
+	strcat(argumento, palabra);
+	free(palabra);
 	return argumento;
 }
 
@@ -50,7 +34,7 @@ int charAInt(char *numero){
 		multiplicar = -1;
 		indice = 1;
 	}
-	for(; indice < tamanoArreglo(numero); indice++){
+	for(; indice < strlen(numero); indice++){
 		retornar += (int)(numero[indice] - '0');
 		retornar *= 10;
 	}
