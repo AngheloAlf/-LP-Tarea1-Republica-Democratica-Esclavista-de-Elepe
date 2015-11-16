@@ -25,7 +25,7 @@ void insertar(char *nombrearch){
 		FILE *arch1,*arch2,*arch3;
 		arch1=fopen(nombrearch,"r");
 		char *nomarch = malloc(sizeof(char) * LARGO), *lineac  = malloc(sizeof(char) * LARGO), *rawLine = malloc(sizeof(char) * LARGO);
-		int indice, linea, cont=0;
+		int indice, linea, cont=0,contsi=-1,contot=-1;
 		size_t n_tokens, tamanoRaw = LARGO;
 		char **inputLine = malloc(sizeof(char) * LARGO);
 
@@ -36,7 +36,7 @@ void insertar(char *nombrearch){
 			while(!feof(arch1)){
 				getline(&rawLine, &tamanoRaw, arch1);
 
-				
+				contot++;
 				inputLine = split(rawLine, strlen(rawLine), ' ', &n_tokens);
 				linea = charAInt(inputLine[1]);
 				nomarch = inputLine[0];
@@ -52,11 +52,14 @@ void insertar(char *nombrearch){
 					cont = 0;
 					if(fgets(lineac, LARGO, arch2)){
 						do{
-							printf("->%d %d\n", cont, linea);
-							printf("%zu\n", n_tokens);
 							if(cont == linea){
+								contsi++;
 								for(indice = 2; indice < n_tokens; indice++){
 									fputs(inputLine[indice], arch3);
+									printf("->>>>%s\n", inputLine[indice]);
+									if(indice+1 != n_tokens){
+										fputs(" ", arch3);
+									}
 								}
 							}
 							fputs(lineac, arch3);
@@ -64,13 +67,23 @@ void insertar(char *nombrearch){
 						} while(fgets(lineac, LARGO, arch2));
 					}
 					else{
+						contsi++;
 						for(indice = 2; indice < n_tokens; indice++){
+							
 							fputs(inputLine[indice], arch3);
+							if(indice+1 != n_tokens){
+								fputs(" ", arch3);
+							}
 						}
 					}
 					if(linea < 0){
+						contsi++;
 						for(indice = 2; indice < n_tokens; indice++){
 							fputs(inputLine[indice], arch3);
+
+							if(indice+1 != n_tokens){
+								fputs(" ", arch3);
+							}
 						}
 					}
 					
@@ -83,38 +96,44 @@ void insertar(char *nombrearch){
 			}
 			fclose(arch1);
 		}
+		printf("%d ingresos de %d , %f %% correcto \n", contsi,contot,((float)contsi/contot)*100);
 	}
 }
 
 void eliminar_linea(char *nombrearch){
 	if(strcmp(nombrearch, "db/noargs")){
-		FILE *arch1,*arch2,*arch3;
-		arch1 = fopen(nombrearch,"r");
-		char *nomarch = malloc(sizeof(char) * LARGO), lineac[LARGO];
-		int linea,cont=0;
+		FILE *arch1, *arch2, *arch3;
+		arch1 = fopen(nombrearch, "r");
+		char *nomarch = malloc(sizeof(char) * LARGO), *lineac = malloc(sizeof(char) * LARGO);
+		int linea = 0, cont = 0;
 		if (arch1==NULL){
 			printf(">>>ARCHIVO %s NO EXISTE\n",nombrearch );
 		}
 		else{
-			while(fscanf(arch1,"%s %d",nomarch,&linea)==1){
+			while(fscanf(arch1,"%s %d",nomarch,&linea) == 2){
+				printf("LEYENDOELINPUT\n" );
 				nomarch = agregarBD(nomarch);
 				arch2=fopen(nomarch,"r");
 				if (arch2==NULL){
 					printf(">>>ARCHIVO %s NO EXISTE\n",nomarch);
 				}
+				
 				else{
-					arch3=fopen("bd/nuarch","w");
-					while(fscanf(arch2,"%s",lineac)==1){
+					printf("ELARCHIVOEXISTE\n");
+					arch3=fopen("db/nuarch","w");
+					while(fscanf(arch2," %[^\n]s",lineac)==1){
 						if (cont==linea){
+							printf("OMITIENDOLINEA\n");
+							cont++;
 							continue;
 						}
 						fprintf(arch3, "%s\n",lineac );
 						cont++;
 					}
-					remove(nomarch);
-					rename("bd/nuarch",nomarch);
 					fclose(arch2);
 					fclose(arch3);
+					remove(nomarch);
+					rename("db/nuarch", nomarch);
 				}
 			}
 			fclose(arch1);
@@ -134,7 +153,7 @@ void eliminar_coincidencia(char *nombrearch){ //Base de eliminar lineas
 			printf(">>>ARCHIVO %s NO EXISTE\n",nombrearch );
 		}
 		else{
-			while(fscanf(arch1,"%s %d %s",nomarch,&linea,kiWord)==1){
+			while(fscanf(arch1,"%s %d %s",nomarch,&linea,kiWord)==3){
 				nomarch = agregarBD(nomarch);
 				arch2=fopen(nomarch,"r");
 				if (arch2==NULL){
@@ -165,21 +184,24 @@ void mostrar_por_linea(char *nombrearch){
 	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2;
 		arch1=fopen(nombrearch,"r");
+		int ver;
 		char *nomarch = malloc(sizeof(char) * LARGO), lineac[LARGO];
 		int linea,cont=0;
 		if (arch1==NULL){
 			printf(">>>ARCHIVO %s NO EXISTE\n",nombrearch );
 		}
 		else{
-			while(fscanf(arch1,"%s %d",nomarch,&linea)==1){
+			while(fscanf(arch1,"%s %d",nomarch,&linea)==2){
+				ver=0;
 				nomarch = agregarBD(nomarch);
 				arch2=fopen(nomarch,"r");
 				if (arch2==NULL){
 					printf(">>>ARCHIVO %s NO EXISTE\n",nomarch);
 				}
 				else{
-					while(fscanf(arch2,"%s",lineac)==1){
+					while(fscanf(arch2," %[^\n]s",lineac)==1){
 						if (cont==linea){
+							ver=1;
 							printf(">>>%s\n",lineac);
 							break;
 						}
@@ -187,6 +209,7 @@ void mostrar_por_linea(char *nombrearch){
 					}
 					fclose(arch2);
 				}
+				if (!ver){printf(">>>NO SE PUDO MOSTRAR LINEA\n");}
 			}
 			fclose(arch1);
 		}
