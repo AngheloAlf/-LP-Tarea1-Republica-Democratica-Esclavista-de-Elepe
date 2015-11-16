@@ -40,5 +40,20 @@ char *agregarBD(char *palabra){
 	for(indice = 0; indice < tamanoFrase; indice++){
 		argumento[indice+3] = palabra[indice];
 	}
+	argumento[indice+3] = '\0';
 	return argumento;
+}
+
+int charAInt(char *numero){
+	int retornar = 0, indice = 0, multiplicar = 1;
+	if(numero[0] == '-'){
+		multiplicar = -1;
+		indice = 1;
+	}
+	for(; indice < tamanoArreglo(numero); indice++){
+		retornar += (int)(numero[indice] - '0');
+		retornar *= 10;
+	}
+	retornar /= 10;
+	return retornar*multiplicar;
 }

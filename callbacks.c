@@ -4,26 +4,15 @@
 
 void terminar_programa(char *nombrearch){
 	if(strcmp(nombrearch, "db/noargs")){
-		FILE *arch1,*arch2;
+		FILE *arch1;
 		arch1=fopen(nombrearch,"r");
-		char *nomarch = malloc(sizeof(char) * LARGO), lineac[LARGO];
-		int linea,cont=0;
+		char *lineac = malloc(sizeof(char) * LARGO);
 		if (arch1==NULL){
 			printf(">>>ARCHIVO %s NO EXISTE\n",nombrearch );
 		}
 		else{
-			while(fscanf(arch1,"%s %d",nomarch,&linea)==1){
-				arch2=fopen(nomarch,"r");
-				if (arch2==NULL){
-					printf(">>>ARCHIVO %s NO EXISTE\n",nomarch);
-				}
-				else{
-					while(fscanf(arch2,"%s",lineac)==1){
-						printf(">>>%s\n",lineac);
-						cont++;
-					}
-					fclose(arch2);
-				}
+			while(fgets(lineac, LARGO, arch1) != NULL){
+				printf("%s", lineac);
 			}
 			fclose(arch1);
 		}
@@ -35,7 +24,7 @@ void insertar(char *nombrearch){
 	if(strcmp(nombrearch, "db/noargs")){
 		FILE *arch1,*arch2,*arch3;
 		arch1=fopen(nombrearch,"r");
-		char *nomarch = malloc(sizeof(char) * LARGO), lineac[LARGO], *rawLine = malloc(sizeof(char) * LARGO);
+		char *nomarch = malloc(sizeof(char) * LARGO), *lineac  = malloc(sizeof(char) * LARGO), *rawLine = malloc(sizeof(char) * LARGO);
 		int indice, linea, cont=0;
 		size_t n_tokens, tamanoRaw = LARGO;
 		char **inputLine = malloc(sizeof(char) * LARGO);
@@ -47,31 +36,48 @@ void insertar(char *nombrearch){
 			while(!feof(arch1)){
 				getline(&rawLine, &tamanoRaw, arch1);
 
+				
 				inputLine = split(rawLine, strlen(rawLine), ' ', &n_tokens);
-				linea = (int)(inputLine[1][0] - '0');
+				linea = charAInt(inputLine[1]);
 				nomarch = inputLine[0];
 				nomarch = agregarBD(nomarch);
-				arch2=fopen(nomarch,"r");
+				arch2 = fopen(nomarch, "r");
+				printf("%s\n", nomarch);
 
 				if (arch2==NULL){
-					printf(">>>ARCHIVO %s NO EXISTE\n",nomarch);
+					printf(">>>ARCHIVO %s NO EXISTE\n", nomarch);
 				}
 				else{
-					arch3=fopen("bd/nuarch","w");
-					while(fscanf(arch2,"%s",lineac)==1){
-						if(cont==linea){
-							for(indice = 2; indice < n_tokens; indice++){
-								fprintf(arch2, "%s ", inputLine[indice]);
+					arch3 = fopen("db/nuarch.tmp", "w");
+					cont = 0;
+					if(fgets(lineac, LARGO, arch2)){
+						do{
+							printf("->%d %d\n", cont, linea);
+							printf("%zu\n", n_tokens);
+							if(cont == linea){
+								for(indice = 2; indice < n_tokens; indice++){
+									fputs(inputLine[indice], arch3);
+								}
 							}
-							fprintf(arch2, "\n");
-						}
-						fprintf(arch3, "%s\n",lineac );
-						cont++;
+							fputs(lineac, arch3);
+							++cont;
+						} while(fgets(lineac, LARGO, arch2));
 					}
-					remove(nomarch);
-					rename("bd/nuarch",nomarch);
+					else{
+						for(indice = 2; indice < n_tokens; indice++){
+							fputs(inputLine[indice], arch3);
+						}
+					}
+					if(linea < 0){
+						for(indice = 2; indice < n_tokens; indice++){
+							fputs(inputLine[indice], arch3);
+						}
+					}
+					
 					fclose(arch2);
 					fclose(arch3);
+					remove(nomarch);
+					rename("db/nuarch.tmp",nomarch);
 				}
 
 			}
